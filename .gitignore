@@ -42,6 +42,7 @@ data/*.log
 # Internal docs (not for public repo)
 需求文档.md
 技术架构文档.md
+prompt-optimizer-v0.1.0.zip
 
 # Streamlit
 .stignore
