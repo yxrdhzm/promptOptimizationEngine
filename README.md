@@ -1,31 +1,37 @@
-# Prompt Optimizer / 提示词优化引擎
+<p align="center">
+  <h1 align="center">Prompt Optimizer</h1>
+  <p align="center">LLM Prompt Optimization Engine</p>
+</p>
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+<p align="center">
+  <a href="#english">English</a> · <a href="#chinese">中文</a>
+</p>
 
-> **Automatically optimize system prompts via LLM self-iteration**
-> 通过 LLM 自我迭代，自动优化系统提示词
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
+</p>
 
 ---
 
-## What it does / 功能介绍
+<a id="english"></a>
 
-Prompt Optimizer uses an **OPRO (Optimization by Prompting)** approach: it evaluates your prompt against a test set, analyzes failure cases, and iteratively generates better prompts — all automatically.
+## English
 
-提示词优化引擎采用 **OPRO（基于提示的优化）** 方法：通过测试集评估提示词，分析失败案例，自动生成更优的提示词。
+Automatically optimize system prompts via LLM self-iteration using **OPRO (Optimization by Prompting)**. It evaluates your prompt against a test set, analyzes failure cases, and iteratively generates better prompts — all automatically.
 
-### Key Features / 核心功能
+### Features
 
-| Feature | 描述 |
-|---------|------|
-| **OPRO Iterative Optimization** | Multi-round self-improvement with early stopping / 多轮自迭代优化，支持早停 |
-| **LLM-as-Judge** | Automated 1-5 scoring with reasoning / 自动化 1-5 分评分及理由 |
-| **Multi-provider Support** | OpenAI, Anthropic, DashScope, DeepSeek, Ollama / 支持多家大模型提供商 |
-| **Parallel Evaluation** | Async concurrent test case evaluation / 异步并发评估测试用例 |
-| **Bilingual UI** | Chinese / English language switching / 中英文界面切换 |
-| **Report Export** | Markdown evaluation reports / Markdown 格式评估报告导出 |
+| Feature | Description |
+|---------|-------------|
+| **OPRO Iterative Optimization** | Multi-round self-improvement with early stopping |
+| **LLM-as-Judge** | Automated 1-5 scoring with reasoning |
+| **Multi-provider Support** | OpenAI, Anthropic, DashScope, DeepSeek, Ollama |
+| **Parallel Evaluation** | Async concurrent test case evaluation |
+| **Bilingual UI** | Chinese / English language switching |
+| **Report Export** | Markdown evaluation reports |
 
-## Architecture / 架构
+### Architecture
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -42,44 +48,22 @@ Prompt Optimizer uses an **OPRO (Optimization by Prompting)** approach: it evalu
 └─────────────────────────────────────────────────┘
 ```
 
-## Quick Start / 快速开始
-
-### 1. Install / 安装
+### Quick Start
 
 ```bash
-# Clone the repo
-git clone https://github.com/YOUR_USERNAME/promptOptimizationEngine.git
+git clone https://github.com/yxrdhzm/promptOptimizationEngine.git
 cd promptOptimizationEngine
-
-# Install dependencies
 pip install -e .
+cp .env.example .env   # Fill in your API keys
 ```
 
-### 2. Configure API Keys / 配置 API 密钥
-
-Copy the example env file and fill in your keys:
-
-```bash
-cp .env.example .env
-# Edit .env with your API keys
-```
-
-Or use the **API Settings** tab in the web UI to configure interactively.
-
-也可以在 Web 界面的「API 设置」标签页中交互式配置。
-
-### 3. Run / 运行
-
-**Web UI (Streamlit):**
-
+**Web UI:**
 ```bash
 streamlit run src/ui/app.py
+# Open http://localhost:8501
 ```
 
-Open http://localhost:8501 in your browser.
-
 **CLI:**
-
 ```bash
 python run.py \
   --task "E-commerce customer service refund assistant" \
@@ -87,62 +71,39 @@ python run.py \
   --output report.md
 ```
 
-## Test Set Format / 测试集格式
+### Test Set Format
 
 JSONL file, one JSON object per line:
 
-每行一个 JSON 对象：
-
 ```json
 {"id": "case_001", "input": "What is the refund policy?", "expected": "We offer 7-day no-reason refunds..."}
-{"id": "case_002", "input": "How to apply for a refund?", "expected": "Go to your order page and click apply..."}
 ```
 
-| Field / 字段 | Required / 必填 | Description / 说明 |
-|-------------|----------------|-------------------|
-| `input` | Yes | User question / 用户问题 |
-| `expected` | Yes | Reference answer / 参考答案 |
-| `id` | No | Case identifier / 用例标识 |
-| `eval_rubric` | No | Custom scoring criteria / 自定义评分标准 |
-| `tags` | No | Tags for filtering / 标签 |
+| Field | Required | Description |
+|-------|----------|-------------|
+| `input` | Yes | User question |
+| `expected` | Yes | Reference answer |
+| `id` | No | Case identifier |
+| `eval_rubric` | No | Custom scoring criteria |
+| `tags` | No | Tags for filtering |
 
-## Configuration / 配置
-
-All settings can be configured via `configs/default.yaml` or environment variables:
-
-所有配置可通过 `configs/default.yaml` 或环境变量设置：
+### Configuration
 
 ```yaml
 models:
-  executor: "openai/gpt-4o-mini"    # Model for generating answers / 生成回答的模型
-  optimizer: "openai/gpt-4o"         # Model for prompt optimization / 优化提示词的模型
-  judge: "openai/gpt-4o-mini"        # Model for scoring / 评分的模型
+  executor: "openai/gpt-4o-mini"
+  optimizer: "openai/gpt-4o"
+  judge: "openai/gpt-4o-mini"
 
 optimizer:
-  max_iterations: 5                  # Max optimization rounds / 最大优化轮数
-  num_candidates: 3                  # Candidates per round / 每轮候选数
-  early_stop_patience: 2             # Rounds without improvement to trigger early stop / 早停耐心值
+  max_iterations: 5
+  num_candidates: 3
+  early_stop_patience: 2
 ```
 
 Environment variables use `PO_` prefix: `PO_MODELS__EXECUTOR`, etc.
 
-## Project Structure / 项目结构
-
-```
-prompt-optimizer/
-├── configs/default.yaml       # Default configuration / 默认配置
-├── src/
-│   ├── infrastructure/        # LLM adapter, cache, storage / 基础设施层
-│   ├── core/                  # OPRO optimizer, judge, evaluation / 核心引擎层
-│   ├── application/           # Runner, exporter / 应用编排层
-│   └── ui/                    # Streamlit app + i18n / 展示层
-├── tests/                     # Unit tests / 单元测试
-├── data/                      # Runtime data (gitignored) / 运行时数据
-├── run.py                     # CLI entry point / CLI 入口
-└── pyproject.toml             # Dependencies / 依赖管理
-```
-
-## Tech Stack / 技术栈
+### Tech Stack
 
 - **LLM Gateway**: [LiteLLM](https://github.com/BerriAI/litellm) — 100+ models, one API
 - **Async**: Python asyncio — concurrent evaluation
@@ -152,7 +113,7 @@ prompt-optimizer/
 - **UI**: Streamlit — rapid prototyping
 - **Config**: Pydantic Settings — type-safe configuration
 
-## Roadmap / 路线图
+### Roadmap
 
 - [ ] DSPy / TextGrad integration
 - [ ] Multi-Judge voting system
@@ -160,6 +121,117 @@ prompt-optimizer/
 - [ ] FastAPI + React multi-user interface
 - [ ] LangSmith trace integration
 
-## License / 许可
+---
 
-MIT License
+<a id="chinese"></a>
+
+## 中文
+
+通过 LLM 自我迭代，自动优化系统提示词。采用 **OPRO（基于提示的优化）** 方法：通过测试集评估提示词，分析失败案例，自动生成更优的提示词。
+
+### 核心功能
+
+| 功能 | 描述 |
+|------|------|
+| **OPRO 迭代优化** | 多轮自迭代优化，支持早停 |
+| **LLM-as-Judge** | 自动化 1-5 分评分及理由 |
+| **多模型支持** | OpenAI、Anthropic、DashScope、DeepSeek、Ollama |
+| **并发评估** | 异步并发评估测试用例 |
+| **中英双语** | 界面支持中英文切换 |
+| **报告导出** | Markdown 格式评估报告 |
+
+### 架构
+
+```
+┌─────────────────────────────────────────────────┐
+│              Streamlit UI（中英双语）             │
+├─────────────────────────────────────────────────┤
+│              应用编排层                          │
+│   OptimizationRunner  │  EvaluationPipeline     │
+├─────────────────────────────────────────────────┤
+│              核心引擎层                          │
+│   OPROOptimizer  │  LLMJudge  │  Templates     │
+├─────────────────────────────────────────────────┤
+│              基础设施层                          │
+│   LiteLLM Adapter  │  Cache  │  SQLite Store    │
+└─────────────────────────────────────────────────┘
+```
+
+### 快速开始
+
+```bash
+git clone https://github.com/yxrdhzm/promptOptimizationEngine.git
+cd promptOptimizationEngine
+pip install -e .
+cp .env.example .env   # 填写 API 密钥
+```
+
+**Web 界面：**
+```bash
+streamlit run src/ui/app.py
+# 打开 http://localhost:8501
+```
+
+**命令行：**
+```bash
+python run.py \
+  --task "电商客服退款咨询助手" \
+  --test-set tests/fixtures/sample_testset.jsonl \
+  --output report.md
+```
+
+### 测试集格式
+
+JSONL 文件，每行一个 JSON 对象：
+
+```json
+{"id": "case_001", "input": "什么是退款政策？", "expected": "我们提供7天无理由退款..."}
+```
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `input` | 是 | 用户问题 |
+| `expected` | 是 | 参考答案 |
+| `id` | 否 | 用例标识 |
+| `eval_rubric` | 否 | 自定义评分标准 |
+| `tags` | 否 | 标签 |
+
+### 配置
+
+```yaml
+models:
+  executor: "openai/gpt-4o-mini"
+  optimizer: "openai/gpt-4o"
+  judge: "openai/gpt-4o-mini"
+
+optimizer:
+  max_iterations: 5
+  num_candidates: 3
+  early_stop_patience: 2
+```
+
+环境变量使用 `PO_` 前缀：`PO_MODELS__EXECUTOR` 等。
+
+### 技术栈
+
+- **LLM 网关**: [LiteLLM](https://github.com/BerriAI/litellm) — 100+ 模型，统一接口
+- **异步**: Python asyncio — 并发评估
+- **模板**: Jinja2 — 提示词模板管理
+- **存储**: SQLite + SQLModel — 轻量持久化
+- **缓存**: diskcache — 评估结果缓存
+- **UI**: Streamlit — 快速原型开发
+- **配置**: Pydantic Settings — 类型安全配置
+
+### 路线图
+
+- [ ] DSPy / TextGrad 集成
+- [ ] 多 Judge 投票系统
+- [ ] Few-shot 动态上下文优化
+- [ ] FastAPI + React 多用户界面
+- [ ] LangSmith 追踪集成
+
+---
+
+<p align="center">
+  <sub>Made with ❤️ by <a href="https://github.com/yxrdhzm">yxrdhzm</a></sub>
+</p>
