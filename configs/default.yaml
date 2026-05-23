@@ -1,0 +1,40 @@
+# 提示词优化引擎 - 默认配置
+
+# 模型配置
+models:
+  # 执行模型: 用于生成实际回答
+  executor: "openai/gpt-4o-mini"
+  # 优化器模型: 用于生成候选提示词 (需要强推理能力)
+  optimizer: "openai/gpt-4o"
+  # Judge模型: 用于评分 (可与优化器相同)
+  judge: "openai/gpt-4o-mini"
+
+# 优化器配置
+optimizer:
+  max_iterations: 5
+  num_candidates: 3
+  early_stop_patience: 2
+  history_window: 5
+  temperature: 0.9
+
+# 评估配置
+evaluation:
+  max_concurrency: 10
+  score_consistency_rounds: 1
+  timeout_seconds: 60
+
+# 缓存配置
+cache:
+  enabled: true
+  ttl_seconds: 86400  # 24小时
+  max_size_mb: 500
+
+# 存储配置
+storage:
+  db_path: "data/cache.db"
+  runs_dir: "data/runs"
+
+# 日志配置
+logging:
+  level: "INFO"
+  file: "data/optimizer.log"
